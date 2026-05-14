@@ -1,0 +1,2401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SakayBats – Batangas City Public Transport Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #D62B2B;
+    --red-dark: #A31E1E;
+    --red-light: #FBEAEA;
+    --gold: #E8A020;
+    --gold-light: #FDF3DF;
+    --navy: #0D1B2A;
+    --navy-mid: #1A2F45;
+    --navy-soft: #2A4562;
+    --white: #FFFFFF;
+    --off-white: #F8F6F2;
+    --text: #1A1A1A;
+    --text-muted: #5A6472;
+    --border: rgba(0,0,0,0.1);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 64px;
+    border-bottom: 2px solid var(--red);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo .logo-badge {
+    background: var(--red);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: color 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: var(--red);
+    color: white !important;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--red-dark) !important; color: white !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: 64px;
+  }
+
+  .hero-bg-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 60px,
+        rgba(255,255,255,0.015) 60px,
+        rgba(255,255,255,0.015) 61px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 60px,
+        rgba(255,255,255,0.015) 60px,
+        rgba(255,255,255,0.015) 61px
+      );
+  }
+
+  .hero-accent {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(214,43,43,0.15) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    pointer-events: none;
+  }
+
+  .hero-accent-2 {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.1) 0%, transparent 70%);
+    bottom: -50px;
+    left: 10%;
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 5rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(214,43,43,0.2);
+    border: 1px solid rgba(214,43,43,0.4);
+    color: #FF8A8A;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #FF6B6B;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 span {
+    color: var(--red);
+    display: block;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .hero-desc {
+    color: rgba(255,255,255,0.65);
+    font-size: 1.05rem;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--red);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: rgba(255,255,255,0.85);
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.6); color: white; }
+
+  /* HERO MAP MOCK */
+  .hero-map {
+    background: var(--navy-mid);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    position: relative;
+    height: 420px;
+    animation: floatUp 6s ease-in-out infinite;
+  }
+
+  @keyframes floatUp {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .map-header {
+    background: var(--navy-soft);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .map-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .map-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--red);
+    padding: 1.2rem 2.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    text-align: center;
+    color: white;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  /* SECTIONS */
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 5rem 2.5rem;
+  }
+
+  .section-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--red);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--navy);
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 300;
+    max-width: 560px;
+    margin-bottom: 3rem;
+  }
+
+  /* FEATURES */
+  .features-bg {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem 1.75rem;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .feature-card:hover::before { transform: scaleX(1); }
+  .feature-card:hover { transform: translateY(-3px); border-color: rgba(214,43,43,0.2); }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--red-light);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .feature-icon svg { width: 24px; height: 24px; color: var(--red); }
+
+  .feature-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-card p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* HOW IT WORKS */
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .steps-list { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .step {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .step:hover, .step.active {
+    background: white;
+    border-color: var(--border);
+  }
+
+  .step-num {
+    min-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step.active .step-num { background: var(--red); }
+
+  .step-content h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+  }
+
+  .step-content p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    font-weight: 300;
+  }
+
+  .how-visual {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 2rem;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ROUTES */
+  .routes-bg {
+    background: var(--navy);
+  }
+
+  .routes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .route-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: background 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+
+  .route-card:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-2px);
+  }
+
+  .route-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .route-badge {
+    background: var(--red);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+  }
+
+  .route-badge.gold { background: var(--gold); color: var(--navy); }
+  .route-badge.teal { background: #1A7A6E; }
+
+  .route-type {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .route-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+
+  .route-via {
+    font-size: 0.83rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+
+  .route-meta {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .route-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .route-meta-item svg { width: 14px; height: 14px; opacity: 0.7; }
+
+  /* SEARCH SECTION */
+  .search-section {
+    background: white;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 4rem 2.5rem;
+  }
+
+  .search-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .search-box {
+    background: var(--off-white);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    transition: border-color 0.2s;
+  }
+
+  .search-box:focus-within { border-color: var(--red); }
+
+  .search-box input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.6rem 0.75rem;
+    color: var(--text);
+    outline: none;
+  }
+
+  .search-box input::placeholder { color: var(--text-muted); }
+
+  .search-box button {
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .search-box button:hover { background: var(--red-dark); }
+
+  .search-suggestions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.25rem;
+  }
+
+  .suggestion-pill {
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .suggestion-pill:hover { border-color: var(--red); color: var(--red); }
+
+  /* SDG SECTION */
+  .sdg-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .sdg-card {
+    border-radius: var(--radius);
+    padding: 2rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sdg-card.sdg-9 { background: var(--gold-light); border: 1px solid rgba(232,160,32,0.25); }
+  .sdg-card.sdg-11 { background: #EAF3FD; border: 1px solid rgba(30,100,200,0.2); }
+  .sdg-card.sdg-8 { background: #EDFAF6; border: 1px solid rgba(20,140,100,0.2); }
+
+  .sdg-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+    opacity: 0.15;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+  }
+
+  .sdg-9 .sdg-num { color: #B47A00; }
+  .sdg-11 .sdg-num { color: #1A5CB5; }
+  .sdg-8 .sdg-num { color: #0E7A57; }
+
+  .sdg-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+  }
+
+  .sdg-9 .sdg-label { color: #B47A00; }
+  .sdg-11 .sdg-label { color: #1A5CB5; }
+  .sdg-8 .sdg-label { color: #0E7A57; }
+
+  .sdg-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sdg-9 h3 { color: #7A5200; }
+  .sdg-11 h3 { color: #0F3D80; }
+  .sdg-8 h3 { color: #085A3E; }
+
+  .sdg-card p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sdg-9 p { color: #8A6200; }
+  .sdg-11 p { color: #1A4A90; }
+  .sdg-8 p { color: #116649; }
+
+  /* ABOUT SECTION */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .about-card {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    color: white;
+  }
+
+  .about-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: white;
+  }
+
+  .about-card p {
+    color: rgba(255,255,255,0.65);
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .about-objectives {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .objective {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .obj-num {
+    min-width: 32px;
+    height: 32px;
+    background: var(--red);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .obj-text {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    padding-top: 5px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy);
+    border-top: 2px solid var(--red);
+    padding: 3rem 2.5rem 2rem;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .footer-brand p {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.83rem;
+    font-weight: 300;
+    margin-top: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .footer-col h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .footer-col a {
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 300;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: rgba(255,255,255,0.9); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-bottom p {
+    color: rgba(255,255,255,0.35);
+    font-size: 0.8rem;
+    font-weight: 300;
+  }
+
+  .footer-bottom span {
+    color: rgba(255,255,255,0.2);
+    font-size: 0.8rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero-inner, .how-grid, .about-grid { grid-template-columns: 1fr; }
+    .hero-map { display: none; }
+    .sdg-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 1.25rem; }
+    .nav-links { display: none; }
+    .section { padding: 3.5rem 1.25rem; }
+    .search-section { padding: 3rem 1.25rem; }
+    .stats-bar { padding: 1.2rem 1.25rem; gap: 2rem; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  /* MAP SECTION RESPONSIVE */
+  .map-layout {
+    grid-template-columns: 260px 1fr;
+  }
+
+  @media (max-width: 860px) {
+    .map-layout {
+      grid-template-columns: 1fr !important;
+      padding: 1rem 1.25rem 3rem !important;
+    }
+
+    /* Sidebar becomes a horizontal scrolling strip */
+    .map-sidebar {
+      flex-direction: row !important;
+      overflow-x: auto !important;
+      gap: 0.6rem !important;
+      padding-bottom: 0.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .map-sidebar::-webkit-scrollbar { display: none; }
+
+    .map-sidebar-label { display: none !important; }
+
+    .sector-chips-list {
+      display: contents !important;
+    }
+
+    .sector-chip {
+      flex-shrink: 0 !important;
+      min-width: 160px !important;
+      margin-bottom: 0 !important;
+    }
+
+    .sector-chip-desc { display: none !important; }
+
+    .map-portal {
+      height: 420px !important;
+    }
+
+    /* Shrink portal content padding on mobile */
+    .map-portal > div:last-child > div {
+      padding: 1.5rem 1rem !important;
+      gap: 1rem !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .map-portal {
+      height: 360px !important;
+    }
+    .sector-chip {
+      min-width: 140px !important;
+    }
+    .url-label { display: none; }
+  }
+
+  /* FLOATING TAB BAR */
+  #float-tabs {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  #float-tabs.visible {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .float-tabs-inner {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(13, 27, 42, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 6px 8px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+
+  .ftab {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px;
+    border-radius: 100px;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.55);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+
+  .ftab svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .ftab:hover {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.9);
+  }
+
+  .ftab.active {
+    background: var(--red);
+    color: white;
+  }
+
+  .ftab-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255,255,255,0.1);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .ftab span { display: none; }
+    .ftab { padding: 10px 12px; }
+    #float-tabs { bottom: 16px; }
+    .float-tabs-inner { gap: 2px; padding: 5px 6px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- FLOATING TAB BAR -->
+<div id="float-tabs">
+  <div class="float-tabs-inner">
+    <a href="#search" class="ftab" data-section="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>Search</span>
+    </a>
+    <div class="ftab-divider"></div>
+    <a href="#routes" class="ftab" data-section="routes">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Map & Routes</span>
+    </a>
+    <div class="ftab-divider"></div>
+    <a href="#how" class="ftab" data-section="how">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      <span>How It Works</span>
+    </a>
+    <div class="ftab-divider"></div>
+    <a href="#about" class="ftab" data-section="about">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <span>About</span>
+    </a>
+    <div class="ftab-divider"></div>
+    <a href="https://batangascitycommute.infinityfreeapp.com/" target="_blank" rel="noopener" class="ftab" style="color:rgba(255,200,100,0.8);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>Open Map ↗</span>
+    </a>
+  </div>
+</div>
+
+<!-- FIND MY ROUTE MODAL -->
+<div id="route-modal" style="display:none;position:fixed;inset:0;z-index:999;align-items:center;justify-content:center;padding:1rem;">
+  <!-- Backdrop -->
+  <div id="modal-backdrop" onclick="closeRouteModal()" style="position:absolute;inset:0;background:rgba(5,12,22,0.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);"></div>
+
+  <!-- Modal box -->
+  <div id="modal-box" style="position:relative;z-index:1;background:#0D1B2A;border:1px solid rgba(255,255,255,0.1);border-radius:20px;width:100%;max-width:580px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,0.6);transform:scale(0.95) translateY(16px);opacity:0;transition:transform 0.3s ease,opacity 0.3s ease;">
+
+  <!-- ====== TRANSPORT PICKER VIEW ====== -->
+  <div id="modal-transport-picker">
+    <!-- Header -->
+    <div style="padding:1.75rem 1.75rem 0;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;">
+      <div>
+        <div style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--red);margin-bottom:0.4rem;">SakayBats</div>
+        <h2 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:white;line-height:1.2;">Find My Route</h2>
+        <p style="font-size:0.83rem;color:rgba(255,255,255,0.4);margin-top:0.4rem;line-height:1.5;">Choose your transport type to get started.</p>
+      </div>
+      <button onclick="closeRouteModal()" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.2s;"
+        onmouseover="this.style.background='rgba(255,255,255,0.14)'" onmouseout="this.style.background='rgba(255,255,255,0.07)'">✕</button>
+    </div>
+
+    <!-- Search bar (non-functional placeholder) -->
+    <div style="padding:1.25rem 1.75rem 0;">
+      <div style="background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;display:flex;align-items:center;gap:10px;padding:0 14px;transition:border-color 0.2s;" id="modal-search-wrap"
+        onfocus="document.getElementById('modal-search-wrap').style.borderColor='rgba(214,43,43,0.5)'"
+        onblur="document.getElementById('modal-search-wrap').style.borderColor='rgba(255,255,255,0.1)'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.2" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search destination… (coming soon)"
+          style="flex:1;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:rgba(255,255,255,0.85);padding:13px 0;"
+          onclick="showComingSoonToast()"
+          readonly
+        >
+        <span style="font-size:0.68rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);padding:3px 8px;border-radius:5px;white-space:nowrap;">Soon</span>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div style="padding:1.25rem 1.75rem 0.5rem;display:flex;align-items:center;gap:10px;">
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.07);"></div>
+      <span style="font-size:0.7rem;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.1em;">or pick a transport type</span>
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.07);"></div>
+    </div>
+
+    <!-- Transport type grid -->
+    <div style="padding:0 1.75rem;display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+
+      <!-- TRICYCLE — available -->
+      <button class="transport-btn" onclick="selectTransport('tricycle')"
+        style="background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:1.25rem;cursor:pointer;text-align:left;transition:all 0.2s;position:relative;overflow:hidden;"
+        onmouseover="this.style.background='rgba(93,184,232,0.1)';this.style.borderColor='rgba(93,184,232,0.45)'"
+        onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.1)'">
+        <div style="width:44px;height:44px;border-radius:10px;background:rgba(93,184,232,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:0.85rem;">
+          <!-- Tricycle icon -->
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="38" cy="36" r="6" stroke="#5DB8E8" stroke-width="3"/>
+            <circle cx="10" cy="36" r="6" stroke="#5DB8E8" stroke-width="3"/>
+            <path d="M16 36 L32 36" stroke="#5DB8E8" stroke-width="3"/>
+            <path d="M10 30 L10 18 L28 14 L38 30" stroke="#5DB8E8" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M10 18 L20 18 L26 28" stroke="#5DB8E8" stroke-width="2.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:white;margin-bottom:0.2rem;">Tricycle</div>
+        <div style="font-size:0.73rem;color:rgba(255,255,255,0.4);line-height:1.4;">Short-distance, barangay-level routes</div>
+        <div style="position:absolute;top:10px;right:10px;background:rgba(40,202,66,0.15);border:1px solid rgba(40,202,66,0.35);color:#28CA42;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:2px 7px;border-radius:100px;">Available</div>
+      </button>
+
+      <!-- JEEPNEY — available -->
+      <button class="transport-btn" onclick="selectTransport('jeepney')"
+        style="background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:1.25rem;cursor:pointer;text-align:left;transition:all 0.2s;position:relative;overflow:hidden;"
+        onmouseover="this.style.background='rgba(245,200,66,0.1)';this.style.borderColor='rgba(245,200,66,0.45)'"
+        onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.1)'">
+        <div style="width:44px;height:44px;border-radius:10px;background:rgba(245,200,66,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:0.85rem;">
+          <!-- Jeepney icon -->
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="16" width="40" height="18" rx="4" stroke="#F5C842" stroke-width="3"/>
+            <path d="M4 20 L12 12 L36 12 L44 20" stroke="#F5C842" stroke-width="3" stroke-linejoin="round"/>
+            <circle cx="13" cy="36" r="5" stroke="#F5C842" stroke-width="3"/>
+            <circle cx="35" cy="36" r="5" stroke="#F5C842" stroke-width="3"/>
+            <line x1="18" y1="36" x2="30" y2="36" stroke="#F5C842" stroke-width="2.5"/>
+            <line x1="24" y1="16" x2="24" y2="30" stroke="#F5C842" stroke-width="2"/>
+          </svg>
+        </div>
+        <div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:white;margin-bottom:0.2rem;">Jeepney</div>
+        <div style="font-size:0.73rem;color:rgba(255,255,255,0.4);line-height:1.4;">City-wide routes across all sectors</div>
+        <div style="position:absolute;top:10px;right:10px;background:rgba(40,202,66,0.15);border:1px solid rgba(40,202,66,0.35);color:#28CA42;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:2px 7px;border-radius:100px;">Available</div>
+      </button>
+
+      <!-- BATRASCO — available -->
+      <button class="transport-btn" onclick="selectTransport('batrasco')"
+        style="background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:1.25rem;cursor:pointer;text-align:left;transition:all 0.2s;position:relative;overflow:hidden;"
+        onmouseover="this.style.background='rgba(232,160,32,0.1)';this.style.borderColor='rgba(232,160,32,0.45)'"
+        onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.1)'">
+        <div style="width:44px;height:44px;border-radius:10px;background:rgba(232,160,32,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:0.85rem;">
+          <!-- Bus/BATRASCO icon -->
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="10" width="36" height="26" rx="4" stroke="#E8A020" stroke-width="3"/>
+            <path d="M6 20 L42 20" stroke="#E8A020" stroke-width="2.5"/>
+            <circle cx="14" cy="38" r="4" stroke="#E8A020" stroke-width="3"/>
+            <circle cx="34" cy="38" r="4" stroke="#E8A020" stroke-width="3"/>
+            <rect x="12" y="12" width="10" height="6" rx="2" stroke="#E8A020" stroke-width="2"/>
+            <rect x="26" y="12" width="10" height="6" rx="2" stroke="#E8A020" stroke-width="2"/>
+          </svg>
+        </div>
+        <div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:white;margin-bottom:0.2rem;">BATRASCO</div>
+        <div style="font-size:0.73rem;color:rgba(255,255,255,0.4);line-height:1.4;">Batangas provincial bus terminals</div>
+        <div style="position:absolute;top:10px;right:10px;background:rgba(40,202,66,0.15);border:1px solid rgba(40,202,66,0.35);color:#28CA42;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:2px 7px;border-radius:100px;">Available</div>
+      </button>
+
+      <!-- BUS — coming soon -->
+      <div class="transport-btn transport-unavail"
+        style="background:rgba(255,255,255,0.025);border:1.5px dashed rgba(255,255,255,0.07);border-radius:14px;padding:1.25rem;text-align:left;position:relative;overflow:hidden;opacity:0.55;cursor:not-allowed;"
+        onclick="showComingSoonToast()">
+        <div style="width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;margin-bottom:0.85rem;">
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="8" width="40" height="30" rx="4" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+            <path d="M4 22 L44 22" stroke="rgba(255,255,255,0.3)" stroke-width="2.5"/>
+            <circle cx="13" cy="40" r="4" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+            <circle cx="35" cy="40" r="4" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+            <rect x="10" y="11" width="8" height="8" rx="2" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+            <rect x="20" y="11" width="8" height="8" rx="2" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+            <rect x="30" y="11" width="8" height="8" rx="2" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+          </svg>
+        </div>
+        <div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:rgba(255,255,255,0.45);margin-bottom:0.2rem;">Bus</div>
+        <div style="font-size:0.73rem;color:rgba(255,255,255,0.25);line-height:1.4;">Inter-city & provincial bus lines</div>
+        <div style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:2px 7px;border-radius:100px;">Soon</div>
+      </div>
+
+      <!-- PIER BOATS — coming soon -->
+      <div class="transport-btn transport-unavail"
+        style="background:rgba(255,255,255,0.025);border:1.5px dashed rgba(255,255,255,0.07);border-radius:14px;padding:1.25rem;text-align:left;position:relative;overflow:hidden;opacity:0.55;cursor:not-allowed;"
+        onclick="showComingSoonToast()">
+        <div style="width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;margin-bottom:0.85rem;">
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 30 L10 20 L24 16 L38 20 L42 30 Z" stroke="rgba(255,255,255,0.3)" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M24 16 L24 8" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+            <path d="M24 8 L34 16" stroke="rgba(255,255,255,0.3)" stroke-width="2.5"/>
+            <path d="M4 34 Q12 38 20 34 Q28 30 36 34 Q40 36 44 34" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" fill="none"/>
+          </svg>
+        </div>
+        <div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:rgba(255,255,255,0.45);margin-bottom:0.2rem;">Pier Boats</div>
+        <div style="font-size:0.73rem;color:rgba(255,255,255,0.25);line-height:1.4;">Sea routes from Batangas Port</div>
+        <div style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:2px 7px;border-radius:100px;">Soon</div>
+      </div>
+
+      <!-- MORE — coming soon placeholder -->
+      <div class="transport-btn transport-unavail"
+        style="background:rgba(255,255,255,0.025);border:1.5px dashed rgba(255,255,255,0.07);border-radius:14px;padding:1.25rem;text-align:left;position:relative;overflow:hidden;opacity:0.4;cursor:not-allowed;"
+        onclick="showComingSoonToast()">
+        <div style="width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;margin-bottom:0.85rem;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        </div>
+        <div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:rgba(255,255,255,0.3);margin-bottom:0.2rem;">More</div>
+        <div style="font-size:0.73rem;color:rgba(255,255,255,0.2);line-height:1.4;">More transport types coming</div>
+        <div style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.2);font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:2px 7px;border-radius:100px;">Soon</div>
+      </div>
+
+    </div>
+
+    <!-- Footer note -->
+    <div style="padding:1.25rem 1.75rem 1.75rem;text-align:center;">
+      <p style="font-size:0.75rem;color:rgba(255,255,255,0.2);line-height:1.5;">Grayed-out transport types are planned for future updates.<br>Data is validated by local drivers, dispatchers & city officials.</p>
+    </div>
+  </div><!-- end modal-transport-picker -->
+
+  <!-- ====== ROUTE DETAIL VIEW ====== -->
+  <div id="modal-route-detail" style="display:none;">
+
+    <!-- Detail header -->
+    <div id="detail-header-bar" style="padding:1.5rem 1.75rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03);">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button onclick="backToTransportPicker()" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;transition:background 0.2s;"
+          onmouseover="this.style.background='rgba(255,255,255,0.14)'" onmouseout="this.style.background='rgba(255,255,255,0.07)'">←</button>
+        <div>
+          <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.3);font-weight:600;margin-bottom:1px;">Transport Selected</div>
+          <div id="detail-transport-label" style="font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;"></div>
+        </div>
+      </div>
+      <button onclick="closeRouteModal()" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.2s;"
+        onmouseover="this.style.background='rgba(255,255,255,0.14)'" onmouseout="this.style.background='rgba(255,255,255,0.07)'">✕</button>
+    </div>
+
+    <!-- Mini interactive map -->
+    <div style="padding:1.25rem 1.75rem 0.75rem;">
+      <div style="background:#0A1520;border-radius:12px;border:1px dashed rgba(255,255,255,0.1);padding:2rem 1.5rem;text-align:center;">
+        <div style="font-size:1.6rem;margin-bottom:0.6rem;">🚧</div>
+        <div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:rgba(255,255,255,0.6);margin-bottom:0.35rem;">Uh oh! Map unavailable.</div>
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.3);line-height:1.5;">Please wait for maintenance — sorry for the inconvenience!</div>
+      </div>
+    </div>
+
+    <!-- Search bar (non-functional) -->
+    <div style="padding:0.75rem 1.75rem 0.5rem;">
+      <div style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;display:flex;align-items:center;gap:10px;padding:0 14px;" onclick="showComingSoonToast()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2.2" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search destination… (coming soon)" readonly onclick="showComingSoonToast()"
+          style="flex:1;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.35);padding:11px 0;cursor:pointer;">
+        <span style="font-size:0.65rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.25);padding:2px 7px;border-radius:4px;white-space:nowrap;">Soon</span>
+      </div>
+    </div>
+
+    <!-- Routes list -->
+    <div style="padding:0.75rem 1.75rem 0;">
+      <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);font-weight:600;margin-bottom:0.6rem;">Available Routes — Click for fare details</div>
+      <div id="detail-route-list"></div>
+    </div>
+
+    <!-- Route info panel (shown on route click) -->
+    <div id="detail-info-panel" style="display:none;margin:0 1.75rem 0;padding:1.1rem 1.25rem;border-radius:12px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span id="info-panel-id" style="font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:700;padding:2px 9px;border-radius:100px;border:1px solid currentColor;opacity:0.9;"></span>
+        <span id="info-panel-fare" style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;line-height:1;"></span>
+      </div>
+      <div id="info-panel-name" style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:white;margin-bottom:6px;"></div>
+      <div style="font-size:0.75rem;color:rgba(255,255,255,0.35);margin-bottom:8px;line-height:1.5;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:inline;vertical-align:middle;margin-right:4px;color:rgba(255,255,255,0.3);"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8z"/></svg>
+        <span id="info-panel-stops"></span>
+      </div>
+      <div id="info-panel-desc" style="font-size:0.78rem;color:rgba(255,255,255,0.4);font-weight:300;line-height:1.5;font-style:italic;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px;margin-top:4px;"></div>
+    </div>
+
+    <!-- Fare note -->
+    <div style="padding:1rem 1.75rem 1.5rem;">
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <p id="detail-fare-note" style="font-size:0.75rem;color:rgba(255,255,255,0.35);line-height:1.5;font-weight:300;"></p>
+      </div>
+    </div>
+
+  </div><!-- end modal-route-detail -->
+
+  </div>
+</div>
+
+<!-- COMING SOON TOAST -->
+<div id="coming-soon-toast" style="position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);z-index:1001;background:rgba(13,27,42,0.95);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);font-family:'DM Sans',sans-serif;font-size:0.82rem;padding:10px 20px;border-radius:100px;box-shadow:0 6px 24px rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:all 0.3s ease;white-space:nowrap;">
+  🚧 Coming soon — data not yet available
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    SakayBats
+    <span class="logo-badge">Beta</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#routes">Map & Routes</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#map" class="nav-cta">Open Map</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-accent"></div>
+  <div class="hero-accent-2"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-tag">Batangas City · Public Transport Guide</div>
+      <h1>
+        Navigate <span>Batangas City</span>
+        with <em>confidence.</em>
+      </h1>
+      <p class="hero-desc">
+        SakayBats is your go-to interactive guide for jeepney and tricycle routes
+        in Batangas City — with real fare estimates, terminal locations, and
+        point-to-point directions.
+      </p>
+      <div class="hero-buttons">
+        <a href="#" class="btn-primary" onclick="openRouteModal(event)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3,11 22,2 13,21 11,13"/></svg>
+          Find My Route
+        </a>
+        <a href="#routes" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          Browse Routes
+        </a>
+      </div>
+    </div>
+
+    <!-- MAP MOCKUP -->
+    <div class="hero-map" id="map">
+      <div class="map-header">
+        <div class="map-dot" style="background:#FF5F57"></div>
+        <div class="map-dot" style="background:#FFBD2E"></div>
+        <div class="map-dot" style="background:#28CA42"></div>
+        <span style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-left:6px;font-family:'DM Sans',sans-serif;">SakayBats — Interactive Map</span>
+      </div>
+      <svg viewBox="0 0 460 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:calc(100% - 40px);display:block;">
+        <!-- Grid background -->
+        <defs>
+          <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="460" height="360" fill="url(#grid)"/>
+
+        <!-- Roads -->
+        <path d="M 0 180 L 460 180" stroke="rgba(255,255,255,0.1)" stroke-width="12" stroke-linecap="round"/>
+        <path d="M 0 180 L 460 180" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="15,10"/>
+        <path d="M 230 0 L 230 360" stroke="rgba(255,255,255,0.1)" stroke-width="10" stroke-linecap="round"/>
+        <path d="M 80 0 L 80 360" stroke="rgba(255,255,255,0.06)" stroke-width="7" stroke-linecap="round"/>
+        <path d="M 380 0 L 380 360" stroke="rgba(255,255,255,0.06)" stroke-width="7" stroke-linecap="round"/>
+        <path d="M 0 80 L 460 80" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+        <path d="M 0 280 L 460 280" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+        <path d="M 50 0 L 300 360" stroke="rgba(255,255,255,0.04)" stroke-width="5"/>
+
+        <!-- Jeepney Route A -->
+        <path d="M 30 180 L 110 180 L 160 130 L 230 130 L 290 100 L 420 100" stroke="#D62B2B" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+        <!-- Jeepney Route B -->
+        <path d="M 30 230 L 80 230 L 80 180 L 170 180 L 230 220 L 320 220 L 380 180 L 430 180" stroke="#E8A020" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+        <!-- Tricycle Route -->
+        <path d="M 230 40 L 230 130 L 200 180 L 230 230 L 230 310" stroke="#1A9E85" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-dasharray="8,4" opacity="0.8"/>
+
+        <!-- Terminals -->
+        <circle cx="80" cy="180" r="10" fill="#D62B2B" opacity="0.9"/>
+        <circle cx="80" cy="180" r="16" fill="none" stroke="#D62B2B" stroke-width="1.5" opacity="0.4"/>
+        <circle cx="230" cy="180" r="12" fill="#E8A020"/>
+        <circle cx="230" cy="180" r="19" fill="none" stroke="#E8A020" stroke-width="1.5" opacity="0.35"/>
+        <circle cx="380" cy="180" r="9" fill="#D62B2B" opacity="0.9"/>
+        <circle cx="380" cy="180" r="15" fill="none" stroke="#D62B2B" stroke-width="1.5" opacity="0.35"/>
+        <circle cx="230" cy="40" r="7" fill="#1A9E85"/>
+        <circle cx="230" cy="310" r="7" fill="#1A9E85"/>
+
+        <!-- Labels -->
+        <rect x="55" y="153" width="68" height="20" rx="4" fill="rgba(214,43,43,0.85)"/>
+        <text x="89" y="166" text-anchor="middle" fill="white" font-size="9" font-family="DM Sans, sans-serif" font-weight="500">Batangas Port</text>
+
+        <rect x="198" y="152" width="64" height="20" rx="4" fill="rgba(232,160,32,0.9)"/>
+        <text x="230" y="165" text-anchor="middle" fill="#1A1A00" font-size="9" font-family="DM Sans, sans-serif" font-weight="500">City Hall</text>
+
+        <rect x="354" y="153" width="52" height="20" rx="4" fill="rgba(214,43,43,0.85)"/>
+        <text x="380" y="166" text-anchor="middle" fill="white" font-size="9" font-family="DM Sans, sans-serif" font-weight="500">Sta. Clara</text>
+
+        <!-- Legend -->
+        <rect x="10" y="310" width="220" height="42" rx="6" fill="rgba(255,255,255,0.06)"/>
+        <circle cx="25" cy="323" r="4" fill="#D62B2B"/>
+        <text x="34" y="327" fill="rgba(255,255,255,0.7)" font-size="8.5" font-family="DM Sans, sans-serif">Jeepney Route</text>
+        <circle cx="95" cy="323" r="4" fill="#E8A020"/>
+        <text x="104" y="327" fill="rgba(255,255,255,0.7)" font-size="8.5" font-family="DM Sans, sans-serif">Alt. Jeepney</text>
+        <line x1="18" y1="340" x2="30" y2="340" stroke="#1A9E85" stroke-width="2" stroke-dasharray="4,2"/>
+        <text x="34" y="344" fill="rgba(255,255,255,0.7)" font-size="8.5" font-family="DM Sans, sans-serif">Tricycle Route</text>
+        <circle cx="130" cy="338" r="4" fill="none" stroke="#D62B2B" stroke-width="1.5"/>
+        <text x="138" y="342" fill="rgba(255,255,255,0.7)" font-size="8.5" font-family="DM Sans, sans-serif">Terminal</text>
+
+        <!-- User pin -->
+        <circle cx="160" cy="180" r="7" fill="#4A90E2"/>
+        <circle cx="160" cy="180" r="12" fill="none" stroke="#4A90E2" stroke-width="1.5" opacity="0.5"/>
+        <circle cx="160" cy="180" r="3" fill="white"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num">40+</span>
+    <span class="stat-label">Verified Routes</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">12</span>
+    <span class="stat-label">Major Terminals</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">₱13–₱25</span>
+    <span class="stat-label">Fare Range (Jeepney)</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">Free</span>
+    <span class="stat-label">Always & Forever</span>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-section" id="search">
+  <div class="search-inner">
+    <div class="section-tag">Quick Search</div>
+    <h2 class="section-title" style="color:var(--navy);">Where are you going?</h2>
+    <p style="color:var(--text-muted);font-size:0.95rem;font-weight:300;">Enter your starting point or destination and we'll show you the best route.</p>
+    <div class="search-box">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" style="margin-left:10px;flex-shrink:0;align-self:center;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="e.g. SM City Batangas, Batangas Port, JBLMH...">
+      <button>Search</button>
+    </div>
+    <div class="search-suggestions">
+      <a href="#" class="suggestion-pill">Batangas Port</a>
+      <a href="#" class="suggestion-pill">SM City Batangas</a>
+      <a href="#" class="suggestion-pill">City Hall</a>
+      <a href="#" class="suggestion-pill">Cuta Bus Terminal</a>
+      <a href="#" class="suggestion-pill">JBLMH Hospital</a>
+      <a href="#" class="suggestion-pill">Batangas Cathedral</a>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="features-bg">
+  <div class="section">
+    <div class="section-tag">Core Features</div>
+    <h2 class="section-title">Everything a commuter needs</h2>
+    <p class="section-sub">Built for students, workers, tourists, and everyday residents navigating Batangas City.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+        </div>
+        <h3>Point-to-Point Routing</h3>
+        <p>Get clear, step-by-step directions from any origin to your destination using actual local jeepney and tricycle lines.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <h3>Fare Estimates</h3>
+        <p>Know exactly how much to prepare before you board. No more overpaying or getting shortchanged by unscrupulous operators.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h3>Terminal Locator</h3>
+        <p>Find the exact location of jeepney terminals and tricycle stations across Batangas City on an interactive map.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16,8 20,8 23,11 23,16 16,16 16,8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <h3>Vehicle Type Info</h3>
+        <p>Distinguish between jeepney lines, UV Express routes, and tricycle zones so you board the right vehicle every time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
+        </div>
+        <h3>Validated Route Data</h3>
+        <p>All routes verified through interviews with city administrators, drivers, dispatchers, and regular commuters.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </div>
+        <h3>Mobile-Friendly</h3>
+        <p>Fully responsive and fast-loading, designed for on-the-go use with minimal data consumption on mobile networks.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div style="background:var(--off-white);">
+  <div class="section" id="how">
+    <div class="section-tag">How It Works</div>
+    <h2 class="section-title">Three steps to your destination</h2>
+    <p class="section-sub">SakayBats makes it effortless to navigate Batangas City's public transportation network.</p>
+    <div class="how-grid">
+      <div class="steps-list">
+        <div class="step active" onclick="setStep(0, this)">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Enter your start & end point</h4>
+            <p>Type in your origin and destination — barangay, landmark, or establishment name.</p>
+          </div>
+        </div>
+        <div class="step" onclick="setStep(1, this)">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>See available routes on the map</h4>
+            <p>The system highlights the best jeepney or tricycle routes connecting your two points, with transfer points clearly marked.</p>
+          </div>
+        </div>
+        <div class="step" onclick="setStep(2, this)">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Check fare & board with confidence</h4>
+            <p>Review the estimated fare, know which terminal to head to, and travel with confidence.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="how-visual">
+        <svg id="how-svg" viewBox="0 0 380 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+          <!-- Step 0: Search UI -->
+          <g id="step-0">
+            <rect x="30" y="40" width="320" height="220" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <rect x="50" y="65" width="280" height="40" rx="8" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <circle cx="75" cy="85" r="7" fill="rgba(214,43,43,0.6)"/>
+            <rect x="90" y="79" width="140" height="12" rx="3" fill="rgba(255,255,255,0.2)"/>
+            <rect x="50" y="118" width="280" height="40" rx="8" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <circle cx="75" cy="138" r="7" fill="rgba(26,158,133,0.6)"/>
+            <rect x="90" y="132" width="110" height="12" rx="3" fill="rgba(255,255,255,0.15)"/>
+            <rect x="50" y="175" width="280" height="44" rx="8" fill="rgba(214,43,43,0.8)"/>
+            <text x="190" y="201" text-anchor="middle" fill="white" font-size="13" font-family="DM Sans, sans-serif" font-weight="500">Find My Route →</text>
+          </g>
+
+          <!-- Step 1: Map with route (hidden by default) -->
+          <g id="step-1" opacity="0">
+            <rect x="30" y="20" width="320" height="260" rx="12" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <defs><pattern id="g2" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="0.8"/></pattern></defs>
+            <rect x="30" y="20" width="320" height="260" rx="12" fill="url(#g2)"/>
+            <path d="M 60 200 L 100 200 L 140 160 L 200 160 L 240 200 L 320 200" stroke="#D62B2B" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="60" cy="200" r="9" fill="#D62B2B"/>
+            <circle cx="320" cy="200" r="9" fill="#1A9E85"/>
+            <circle cx="200" cy="160" r="7" fill="#E8A020" stroke="white" stroke-width="2"/>
+            <rect x="170" y="130" width="60" height="22" rx="5" fill="rgba(232,160,32,0.85)"/>
+            <text x="200" y="145" text-anchor="middle" fill="#1A1A00" font-size="9" font-family="DM Sans,sans-serif" font-weight="500">Transfer</text>
+          </g>
+
+          <!-- Step 2: Fare info (hidden by default) -->
+          <g id="step-2" opacity="0">
+            <rect x="60" y="30" width="260" height="240" rx="14" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <rect x="80" y="55" width="220" height="3" rx="2" fill="rgba(214,43,43,0.8)"/>
+            <text x="190" y="42" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="11" font-family="Syne,sans-serif" font-weight="700">Route Summary</text>
+            <text x="90" y="90" fill="rgba(255,255,255,0.45)" font-size="9" font-family="DM Sans,sans-serif">ESTIMATED FARE</text>
+            <text x="90" y="115" fill="white" font-size="28" font-family="Syne,sans-serif" font-weight="800">₱ 24</text>
+            <rect x="80" y="138" width="220" height="1" fill="rgba(255,255,255,0.07)"/>
+            <text x="90" y="162" fill="rgba(255,255,255,0.45)" font-size="9" font-family="DM Sans,sans-serif">JEEPNEY LINE</text>
+            <text x="90" y="182" fill="rgba(255,255,255,0.85)" font-size="12" font-family="DM Sans,sans-serif" font-weight="500">Cuta – Batangas Port</text>
+            <text x="90" y="212" fill="rgba(255,255,255,0.45)" font-size="9" font-family="DM Sans,sans-serif">TERMINAL</text>
+            <text x="90" y="232" fill="rgba(255,255,255,0.85)" font-size="12" font-family="DM Sans,sans-serif" font-weight="500">Cuta Public Market</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INTERACTIVE MAP -->
+<div style="background:#0D1B2A;" id="routes">
+  <div class="section" style="padding-bottom:0;">
+    <div class="section-tag" style="color:rgba(255,255,255,0.45);">Interactive Map</div>
+    <h2 class="section-title" style="color:white;">Batangas City Jeepney Network</h2>
+    <p class="section-sub" style="color:rgba(255,255,255,0.45);">Select a route sector to highlight it on the map. Click any terminal or landmark for details.</p>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:1.5rem 2.5rem 4rem;display:grid;grid-template-columns:260px 1fr;gap:1.5rem;align-items:start;" class="map-layout">
+
+    <!-- SIDEBAR -->
+    <div class="map-sidebar" style="display:flex;flex-direction:column;gap:0.75rem;">
+      <div class="map-sidebar-label" style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.3);margin-bottom:0.25rem;">Route Sectors</div>
+
+      <!-- Sector info chips — vertical on desktop, horizontal scroll on mobile -->
+      <div class="sector-chips-list" style="display:flex;flex-direction:column;gap:0.75rem;">
+
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px 14px;" class="sector-chip">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;">
+            <span style="width:10px;height:10px;border-radius:2px;background:#F5C842;flex-shrink:0;display:inline-block;"></span>
+            <span style="font-size:0.83rem;color:white;font-weight:500;"><strong>BP</strong> — Poblacion</span>
+          </div>
+          <div class="sector-chip-desc" style="font-size:0.77rem;color:rgba(255,255,255,0.4);line-height:1.5;">Urban routes within the city center. Hub: Grand Terminal. Fare: ₱13–₱16</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px 14px;" class="sector-chip">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;">
+            <span style="width:10px;height:10px;border-radius:2px;background:#E85D5D;flex-shrink:0;display:inline-block;"></span>
+            <span style="font-size:0.83rem;color:white;font-weight:500;"><strong>BN</strong> — Northbound</span>
+          </div>
+          <div class="sector-chip-desc" style="font-size:0.77rem;color:rgba(255,255,255,0.4);line-height:1.5;">To Lipa, San Jose, Ibaan, Rosario. Hub: Grand Terminal. Fare: ₱20–₱45</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px 14px;" class="sector-chip">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;">
+            <span style="width:10px;height:10px;border-radius:2px;background:#5DB8E8;flex-shrink:0;display:inline-block;"></span>
+            <span style="font-size:0.83rem;color:white;font-weight:500;"><strong>BS</strong> — Southbound</span>
+          </div>
+          <div class="sector-chip-desc" style="font-size:0.77rem;color:rgba(255,255,255,0.4);line-height:1.5;">To Libjo, Sta. Clara, Balagtas. Hub: SM Transport Terminal. Fare: ₱13–₱20</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px 14px;" class="sector-chip">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;">
+            <span style="width:10px;height:10px;border-radius:2px;background:#5DE86A;flex-shrink:0;display:inline-block;"></span>
+            <span style="font-size:0.83rem;color:white;font-weight:500;"><strong>BE</strong> — Eastbound</span>
+          </div>
+          <div class="sector-chip-desc" style="font-size:0.77rem;color:rgba(255,255,255,0.4);line-height:1.5;">To Lobo, Taysan, Dagatan, Mt. Banoy. Hub: Pallocan Terminal. Fare: ₱20–₱50</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px 14px;" class="sector-chip">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;">
+            <span style="width:10px;height:10px;border-radius:2px;background:#5D8AE8;flex-shrink:0;display:inline-block;"></span>
+            <span style="font-size:0.83rem;color:white;font-weight:500;"><strong>BW</strong> — Westbound</span>
+          </div>
+          <div class="sector-chip-desc" style="font-size:0.77rem;color:rgba(255,255,255,0.4);line-height:1.5;">To Bauan, Mabini, Lemery, Calicanto. Hub: Grand Terminal. Fare: ₱13–₱55</div>
+        </div>
+
+      </div>
+
+      <a href="https://batangascitycommute.infinityfreeapp.com/" target="_blank" rel="noopener"
+        style="margin-top:0.5rem;background:var(--red);color:white;padding:11px 14px;border-radius:8px;text-decoration:none;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;display:flex;align-items:center;justify-content:center;gap:7px;transition:background 0.2s;flex-shrink:0;"
+        onmouseover="this.style.background='#A31E1E'" onmouseout="this.style.background='var(--red)'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Open Full Map
+      </a>
+    </div>
+
+    <!-- MAP CANVAS — Live iframe embed -->
+    <div style="background:#111E2E;border-radius:14px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;position:relative;display:flex;flex-direction:column;">
+
+      <!-- Browser chrome bar -->
+      <div style="background:#0A1520;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#FF5F57;"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#FFBD2E;"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#28CA42;"></div>
+          <!-- URL bar -->
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 12px;display:flex;align-items:center;gap:7px;margin-left:8px;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            <span style="font-size:0.72rem;color:rgba(255,255,255,0.35);font-family:'DM Sans',sans-serif;letter-spacing:0.01em;" class="url-label">batangascitycommute.infinityfreeapp.com</span>
+          </div>
+        </div>
+        <a href="https://batangascitycommute.infinityfreeapp.com/" target="_blank" rel="noopener"
+          style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.55);font-size:0.72rem;font-family:'DM Sans',sans-serif;padding:5px 12px;border-radius:5px;text-decoration:none;display:flex;align-items:center;gap:5px;transition:background 0.2s;"
+          onmouseover="this.style.background='rgba(255,255,255,0.13)'" onmouseout="this.style.background='rgba(255,255,255,0.07)'">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Open in new tab
+        </a>
+      </div>
+
+      <!-- Map portal card — iframe embedding blocked by host X-Frame-Options -->
+      <div class="map-portal" style="height:600px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+
+        <!-- Ghost map background SVG -->
+        <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" preserveAspectRatio="xMidYMid slice">
+          <defs><pattern id="mpg" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0L0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/></pattern></defs>
+          <rect width="900" height="600" fill="url(#mpg)"/>
+          <!-- Ghost roads -->
+          <path d="M80 300 L820 300" stroke="rgba(255,255,255,0.1)" stroke-width="14"/>
+          <path d="M60 180 L840 180" stroke="rgba(255,255,255,0.07)" stroke-width="9"/>
+          <path d="M620 40 L620 560" stroke="rgba(255,255,255,0.07)" stroke-width="8"/>
+          <path d="M280 40 L280 560" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+          <path d="M100 180 L200 460 L215 560" stroke="rgba(255,255,255,0.06)" stroke-width="7"/>
+          <!-- Ghost route lines -->
+          <path d="M280 300 L250 335 L215 385 L210 560" stroke="#F5C842" stroke-width="3" fill="none" opacity="0.35"/>
+          <path d="M280 300 L450 300 L620 300" stroke="#F5C842" stroke-width="3" fill="none" opacity="0.35"/>
+          <path d="M280 300 L280 230 L330 140 L430 60" stroke="#E85D5D" stroke-width="3" fill="none" opacity="0.35"/>
+          <path d="M620 320 L550 390 L470 450 L390 540" stroke="#5DB8E8" stroke-width="3" fill="none" opacity="0.35"/>
+          <path d="M620 300 L710 275 L790 245 L860 200" stroke="#5DE86A" stroke-width="3" fill="none" opacity="0.35"/>
+          <path d="M280 300 L190 295 L110 275 L45 250" stroke="#5D8AE8" stroke-width="3" fill="none" opacity="0.35"/>
+          <!-- Ghost terminals -->
+          <circle cx="280" cy="300" r="16" fill="rgba(255,215,0,0.12)" stroke="#FFD700" stroke-width="1.5" opacity="0.5"/>
+          <circle cx="280" cy="300" r="9" fill="#FFD700" opacity="0.3"/>
+          <circle cx="620" cy="300" r="13" fill="rgba(255,215,0,0.1)" stroke="#FFD700" stroke-width="1.5" opacity="0.4"/>
+          <circle cx="620" cy="300" r="7" fill="#FFD700" opacity="0.25"/>
+          <circle cx="210" cy="560" r="9" fill="#5DB8E8" opacity="0.25"/>
+          <!-- Bay -->
+          <ellipse cx="190" cy="600" rx="270" ry="80" fill="rgba(30,80,160,0.18)"/>
+        </svg>
+
+        <!-- Dark gradient overlay -->
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%, rgba(17,30,46,0.45) 0%, rgba(17,30,46,0.95) 80%);pointer-events:none;"></div>
+
+        <!-- Floating content -->
+        <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.4rem;padding:2.5rem;max-width:500px;">
+
+          <!-- Pulsing pin -->
+          <div style="position:relative;">
+            <div style="width:80px;height:80px;border-radius:50%;background:rgba(214,43,43,0.12);border:1.5px solid rgba(214,43,43,0.25);display:flex;align-items:center;justify-content:center;animation:ping 2.5s ease-in-out infinite;">
+              <div style="width:58px;height:58px;border-radius:50%;background:rgba(214,43,43,0.18);border:1.5px solid rgba(214,43,43,0.4);display:flex;align-items:center;justify-content:center;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E85D5D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+            </div>
+            <div style="position:absolute;top:2px;right:2px;width:15px;height:15px;border-radius:50%;background:#28CA42;border:2.5px solid #111E2E;"></div>
+          </div>
+
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;color:white;margin-bottom:0.5rem;">Live Batangas City Route Map</div>
+            <div style="font-size:0.87rem;color:rgba(255,255,255,0.45);line-height:1.7;">The map can't be embedded here because the hosting server blocks it for security. Click below to open the full interactive map — with all jeepney routes, terminals, and point-to-point navigation.</div>
+          </div>
+
+          <!-- Route sector chips -->
+          <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
+            <span style="background:rgba(245,200,66,0.13);border:1px solid rgba(245,200,66,0.3);color:#F5C842;font-size:0.7rem;font-weight:600;padding:4px 12px;border-radius:100px;">BP Poblacion</span>
+            <span style="background:rgba(232,93,93,0.13);border:1px solid rgba(232,93,93,0.3);color:#E85D5D;font-size:0.7rem;font-weight:600;padding:4px 12px;border-radius:100px;">BN Northbound</span>
+            <span style="background:rgba(93,184,232,0.13);border:1px solid rgba(93,184,232,0.3);color:#5DB8E8;font-size:0.7rem;font-weight:600;padding:4px 12px;border-radius:100px;">BS Southbound</span>
+            <span style="background:rgba(93,232,106,0.13);border:1px solid rgba(93,232,106,0.3);color:#5DE86A;font-size:0.7rem;font-weight:600;padding:4px 12px;border-radius:100px;">BE Eastbound</span>
+            <span style="background:rgba(93,138,232,0.13);border:1px solid rgba(93,138,232,0.3);color:#8AABF5;font-size:0.7rem;font-weight:600;padding:4px 12px;border-radius:100px;">BW Westbound</span>
+          </div>
+
+          <!-- CTA -->
+          <a href="https://batangascitycommute.infinityfreeapp.com/" target="_blank" rel="noopener"
+            style="background:var(--red);color:white;padding:14px 36px;border-radius:9px;text-decoration:none;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:500;display:inline-flex;align-items:center;gap:9px;box-shadow:0 4px 24px rgba(214,43,43,0.4);transition:all 0.2s;"
+            onmouseover="this.style.background='#B52424';this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 28px rgba(214,43,43,0.5)'"
+            onmouseout="this.style.background='var(--red)';this.style.transform='none';this.style.boxShadow='0 4px 24px rgba(214,43,43,0.4)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Open Full Route Map
+          </a>
+
+          <div style="font-size:0.73rem;color:rgba(255,255,255,0.2);">Opens in a new tab · batangascitycommute.infinityfreeapp.com</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ROUTES -->
+<div class="routes-bg" id="routes-list">
+  <div class="section">
+    <div class="section-tag" style="color:rgba(255,255,255,0.5);">Popular Routes</div>
+    <h2 class="section-title" style="color:white;">Frequently traveled lines</h2>
+    <p class="section-sub" style="color:rgba(255,255,255,0.5);">The most commonly used jeepney and tricycle corridors in Batangas City.</p>
+    <div class="routes-grid">
+      <div class="route-card">
+        <div class="route-card-header">
+          <span class="route-badge">J-01</span>
+          <span class="route-type">Jeepney</span>
+        </div>
+        <div class="route-title">Cuta – Batangas Port</div>
+        <div class="route-via">via Pallocan West · National Road</div>
+        <div class="route-meta">
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            ~25 min
+          </div>
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            ₱ 13 – ₱ 18
+          </div>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-card-header">
+          <span class="route-badge gold">J-02</span>
+          <span class="route-type">Jeepney</span>
+        </div>
+        <div class="route-title">Cuta – SM City Batangas</div>
+        <div class="route-via">via Kumintang Ibaba · Rizal Ave.</div>
+        <div class="route-meta">
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            ~18 min
+          </div>
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            ₱ 13 – ₱ 15
+          </div>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-card-header">
+          <span class="route-badge teal">T-05</span>
+          <span class="route-type">Tricycle</span>
+        </div>
+        <div class="route-title">City Hall – JBLMH</div>
+        <div class="route-via">via P. Burgos St. · Hospital Road</div>
+        <div class="route-meta">
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            ~12 min
+          </div>
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            ₱ 15 – ₱ 25
+          </div>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-card-header">
+          <span class="route-badge">J-08</span>
+          <span class="route-type">Jeepney</span>
+        </div>
+        <div class="route-title">Bolbok – Poblacion</div>
+        <div class="route-via">via Evangelista St. · Market Area</div>
+        <div class="route-meta">
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            ~30 min
+          </div>
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            ₱ 13 – ₱ 20
+          </div>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-card-header">
+          <span class="route-badge gold">J-11</span>
+          <span class="route-type">Jeepney</span>
+        </div>
+        <div class="route-title">Sta. Clara – Cuta Terminal</div>
+        <div class="route-via">via Gulod Labac · Diversion Road</div>
+        <div class="route-meta">
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            ~22 min
+          </div>
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            ₱ 13 – ₱ 16
+          </div>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-card-header">
+          <span class="route-badge teal">T-12</span>
+          <span class="route-type">Tricycle</span>
+        </div>
+        <div class="route-title">Batangas Cathedral – Market</div>
+        <div class="route-via">via Rizal Avenue · Pallocan</div>
+        <div class="route-meta">
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            ~10 min
+          </div>
+          <div class="route-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            ₱ 15 – ₱ 20
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="#" class="btn-secondary" style="display:inline-flex;">View All 40+ Routes →</a>
+    </div>
+  </div>
+</div>
+
+<!-- SDG SECTION -->
+<div style="background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="section">
+    <div class="section-tag">Sustainable Development</div>
+    <h2 class="section-title">Aligned with the SDGs</h2>
+    <p class="section-sub">SakayBats contributes to three United Nations Sustainable Development Goals through accessible, organized transport information.</p>
+    <div class="sdg-grid">
+      <div class="sdg-card sdg-9">
+        <span class="sdg-num">9</span>
+        <div class="sdg-label">SDG 9</div>
+        <h3>Industry, Innovation & Infrastructure</h3>
+        <p>By creating an innovative web-based solution, SakayBats modernizes access to public transport infrastructure through technology.</p>
+      </div>
+      <div class="sdg-card sdg-11">
+        <span class="sdg-num">11</span>
+        <div class="sdg-label">SDG 11</div>
+        <h3>Sustainable Cities & Communities</h3>
+        <p>Enhancing urban transportation systems in Batangas City promotes safer, more inclusive and organized commuting for all residents.</p>
+      </div>
+      <div class="sdg-card sdg-8">
+        <span class="sdg-num">8</span>
+        <div class="sdg-label">SDG 8</div>
+        <h3>Decent Work & Economic Growth</h3>
+        <p>Helping workers and students travel more efficiently to workplaces and schools contributes to economic productivity and access.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div style="background:var(--off-white);border-bottom:1px solid var(--border);">
+  <div class="section" id="about">
+    <div class="about-grid">
+      <div>
+        <div class="section-tag">About the Project</div>
+        <h2 class="section-title">Why SakayBats?</h2>
+        <p style="color:var(--text-muted);font-size:0.93rem;font-weight:300;line-height:1.75;margin-bottom:1.25rem;">
+          Public transportation in Batangas City has long operated on unwritten, unstandardized routes. Newcomers, students from other provinces, and tourists frequently board the wrong jeepney, overpay for fares, or waste time searching for terminals.
+        </p>
+        <p style="color:var(--text-muted);font-size:0.93rem;font-weight:300;line-height:1.75;">
+          Existing tools like Google Maps and word-of-mouth fail to capture the nuances of Batangas City's local transport network. SakayBats was developed to fill that gap — a community-validated, interactive, freely accessible guide for every commuter.
+        </p>
+      </div>
+      <div class="about-card">
+        <h3>Project Objectives</h3>
+        <div class="about-objectives">
+          <div class="objective">
+            <div class="obj-num">1</div>
+            <p class="obj-text">Design and develop a functional website that displays interactive maps and point-to-point route information for public transportation in Batangas City.</p>
+          </div>
+          <div class="objective">
+            <div class="obj-num">2</div>
+            <p class="obj-text">Gather and validate accurate jeepney and tricycle route data through interviews with city administrators, drivers, dispatchers, and regular commuters.</p>
+          </div>
+          <div class="objective">
+            <div class="obj-num">3</div>
+            <p class="obj-text">Evaluate usability and effectiveness by testing SakayBats with students, workers, and tourists, measuring navigation improvement.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA BANNER -->
+<div style="background:var(--red);padding:4rem 2.5rem;text-align:center;">
+  <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:white;margin-bottom:0.75rem;">Start navigating smarter today.</h2>
+  <p style="color:rgba(255,255,255,0.75);font-size:0.95rem;font-weight:300;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;">Free, always updated, and built for Batangueños — by Batangueños.</p>
+  <a href="#" class="btn-primary" onclick="openRouteModal(event)" style="background:white;color:var(--red);display:inline-flex;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    Find Your Route Now
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="nav-logo" href="#" style="font-size:1.2rem;">SakayBats</a>
+      <p>A web-based interactive mapping system for public transportation routes in Batangas City, Philippines. Developed to empower commuters with accurate, reliable, and free route information.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="#">Route Map</a></li>
+        <li><a href="#">Fare Calculator</a></li>
+        <li><a href="#">Terminal Finder</a></li>
+        <li><a href="#">Browse All Routes</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Routes</h4>
+      <ul>
+        <li><a href="#">Jeepney Lines</a></li>
+        <li><a href="#">Tricycle Zones</a></li>
+        <li><a href="#">UV Express</a></li>
+        <li><a href="#">Inter-City</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="#">About SakayBats</a></li>
+        <li><a href="#">Data Sources</a></li>
+        <li><a href="#">Submit a Correction</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 SakayBats. For Batangas City commuters.</p>
+    <span>A capstone research project · Batangas City, Philippines</span>
+  </div>
+</footer>
+
+<script>
+  // ===== ROUTE MODAL =====
+  function openRouteModal(e) {
+    if (e) e.preventDefault();
+    const modal = document.getElementById('route-modal');
+    const box = document.getElementById('modal-box');
+    modal.style.display = 'flex';
+    requestAnimationFrame(() => {
+      box.style.transform = 'scale(1) translateY(0)';
+      box.style.opacity = '1';
+    });
+    // Reset to transport picker view
+    showTransportPicker();
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeRouteModal() {
+    const modal = document.getElementById('route-modal');
+    const box = document.getElementById('modal-box');
+    box.style.transform = 'scale(0.95) translateY(16px)';
+    box.style.opacity = '0';
+    setTimeout(() => {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }, 300);
+  }
+
+  function showComingSoonToast() {
+    const toast = document.getElementById('coming-soon-toast');
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(-50%) translateY(10px)';
+    }, 2400);
+  }
+
+  function showTransportPicker() {
+    document.getElementById('modal-transport-picker').style.display = 'block';
+    document.getElementById('modal-route-detail').style.display = 'none';
+    document.getElementById('modal-box').scrollTop = 0;
+  }
+
+  // Transport data for the detail map view
+  const transportData = {
+    tricycle: {
+      label: 'Tricycle',
+      color: '#5DB8E8',
+      colorBg: 'rgba(93,184,232,0.12)',
+      routes: [
+        { id: 'T1', name: 'Poblacion – Kumintang Ibaba', fare: '₱15', stops: ['Grand Terminal', 'Kumintang Ibaba', 'Brgy. Alangilan', 'BATSTATE-U'], desc: 'Short-distance barangay coverage. Flag down anywhere along route.' },
+        { id: 'T2', name: 'Cuta – Pallocan West', fare: '₱15', stops: ['Cuta Market', 'San Jose', 'Pallocan West', 'Sta. Rita'], desc: 'Westside barangay connector. Common in residential areas.' },
+        { id: 'T3', name: 'Gulod – Libjo Loop', fare: '₱15–₱20', stops: ['Gulod Terminal', 'Libjo Proper', 'Brgy. Sta. Clara Sur', 'Libjo Loop'], desc: 'Looping southern barangay route. Fare may vary by distance.' },
+        { id: 'T4', name: 'Balagtas – SM Area', fare: '₱20', stops: ['Balagtas Terminal', 'Bolbok', 'SM City Batangas', 'Pallocan East'], desc: 'SM connector from eastern residential zones.' },
+      ],
+      fareNote: 'Tricycle base fare: ₱15 within barangay zone. Additional ₱5 per zone beyond.',
+      mapColor1: '#5DB8E8', mapColor2: '#2A7FA8',
+      mapRoutes: [
+        { d: 'M 80 180 L 140 160 L 200 150 L 260 160 L 310 155', label: 'T1', lx: 185, ly: 140 },
+        { d: 'M 80 210 L 130 220 L 190 215 L 240 225 L 280 215', label: 'T2', lx: 175, ly: 238 },
+        { d: 'M 230 180 L 250 230 L 270 270 L 290 300 L 310 290', label: 'T3', lx: 300, ly: 310 },
+        { d: 'M 270 160 L 310 170 L 350 175 L 390 165 L 420 170', label: 'T4', lx: 350, ly: 155 },
+      ]
+    },
+    jeepney: {
+      label: 'Jeepney',
+      color: '#F5C842',
+      colorBg: 'rgba(245,200,66,0.12)',
+      routes: [
+        { id: 'BP-01', name: 'Cuta – Batangas Port', fare: '₱13', stops: ['Cuta Terminal', 'SM Batangas', 'Rizal Ave', 'Port Area'], desc: 'Primary urban route connecting city center to the port.' },
+        { id: 'BN-03', name: 'Grand Terminal – Lipa City', fare: '₱45', stops: ['Grand Terminal', 'Alangilan', 'Mataas na Kahoy', 'Lipa City Hall'], desc: 'Northbound intercity route. Departs every 20–30 mins.' },
+        { id: 'BS-02', name: 'Grand Terminal – Libjo', fare: '₱20', stops: ['Grand Terminal', 'Kumintang Ilaya', 'Sta. Clara', 'Libjo'], desc: 'Southbound to bayside barangays.' },
+        { id: 'BE-01', name: 'Pallocan – Lobo', fare: '₱50', stops: ['Pallocan Terminal', 'Taysan', 'Dagatan', 'Lobo Proper'], desc: 'Eastbound mountain route. Last trip around 5PM.' },
+        { id: 'BW-01', name: 'Grand Terminal – Bauan', fare: '₱30', stops: ['Grand Terminal', 'Calicanto', 'Mabini Junction', 'Bauan'], desc: 'Westbound coastal route along Batangas Bay.' },
+      ],
+      fareNote: 'Jeepney minimum fare: ₱13 (first 4 km). ₱1.80 per km succeeding. Discounted fare for students, seniors & PWD.',
+      mapColor1: '#F5C842', mapColor2: '#B8962E',
+      mapRoutes: [
+        { d: 'M 50 180 L 120 180 L 180 170 L 240 175 L 320 180 L 410 180', label: 'BP-01', lx: 220, ly: 160 },
+        { d: 'M 100 180 L 130 150 L 180 130 L 240 115 L 310 100 L 380 90', label: 'BN-03', lx: 240, ly: 100 },
+        { d: 'M 100 180 L 130 210 L 180 230 L 240 240 L 310 245 L 360 250', label: 'BS-02', lx: 230, ly: 262 },
+        { d: 'M 100 180 L 150 190 L 210 205 L 280 240 L 340 270 L 390 300', label: 'BE-01', lx: 300, ly: 315 },
+        { d: 'M 100 180 L 90 200 L 70 215 L 50 240 L 40 270', label: 'BW-01', lx: 20, ly: 285 },
+      ]
+    },
+    batrasco: {
+      label: 'BATRASCO',
+      color: '#E8A020',
+      colorBg: 'rgba(232,160,32,0.12)',
+      routes: [
+        { id: 'BT-1', name: 'Batangas City – Manila (EDSA)', fare: '₱180–₱220', stops: ['BATRASCO Terminal', 'Star Tollway', 'SLEX', 'Cubao/EDSA'], desc: 'Express provincial bus to Metro Manila. Aircon. ~2.5 hrs.' },
+        { id: 'BT-2', name: 'Batangas City – Lipa City', fare: '₱60', stops: ['BATRASCO Terminal', 'Padre Garcia', 'Rosario', 'Lipa Terminal'], desc: 'Intercity bus northbound via STAR Tollway.' },
+        { id: 'BT-3', name: 'Batangas City – Nasugbu', fare: '₱90', stops: ['BATRASCO Terminal', 'Calaca', 'Balayan', 'Nasugbu'], desc: 'Westbound coastal route to Nasugbu beach area.' },
+        { id: 'BT-4', name: 'Batangas City – San Jose', fare: '₱40', stops: ['BATRASCO Terminal', 'Ibaan', 'San Jose Proper'], desc: 'Short northbound provincial route.' },
+      ],
+      fareNote: 'BATRASCO air-conditioned bus. Fares subject to change per LTFRB regulation. Senior/student/PWD discount applies.',
+      mapColor1: '#E8A020', mapColor2: '#A86E10',
+      mapRoutes: [
+        { d: 'M 180 280 L 180 230 L 200 200 L 220 170 L 230 140 L 240 100 L 260 60 L 270 30', label: 'BT-1', lx: 278, ly: 25 },
+        { d: 'M 180 280 L 210 260 L 260 230 L 310 200 L 360 170 L 400 140', label: 'BT-2', lx: 405, ly: 132 },
+        { d: 'M 180 280 L 140 270 L 100 255 L 70 240 L 45 220', label: 'BT-3', lx: 18, ly: 215 },
+        { d: 'M 180 280 L 195 240 L 215 200 L 240 165', label: 'BT-4', lx: 248, ly: 155 },
+      ]
+    }
+  };
+
+  let activeRouteIndex = null;
+  let currentTransport = null;
+
+  function selectTransport(type) {
+    currentTransport = type;
+    activeRouteIndex = null;
+    const data = transportData[type];
+
+    // Hide picker, show detail
+    document.getElementById('modal-transport-picker').style.display = 'none';
+    const detail = document.getElementById('modal-route-detail');
+    detail.style.display = 'block';
+
+    // Set header color/label
+    document.getElementById('detail-transport-label').textContent = data.label;
+    document.getElementById('detail-transport-label').style.color = data.color;
+    document.getElementById('detail-header-bar').style.background = data.colorBg;
+    document.getElementById('detail-header-bar').style.borderColor = data.color + '33';
+
+    // Render route list
+    const list = document.getElementById('detail-route-list');
+    list.innerHTML = data.routes.map((r, i) => `
+      <button onclick="selectRoute(${i})" id="route-btn-${i}"
+        style="width:100%;text-align:left;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all 0.2s;margin-bottom:0.6rem;display:block;"
+        onmouseover="this.style.background='rgba(255,255,255,0.08)';this.style.borderColor='${data.color}44'"
+        onmouseout="if(${i}!==activeRouteIndex){this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.08)'}">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+          <span style="font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:${data.color};background:${data.color}22;padding:2px 9px;border-radius:100px;border:1px solid ${data.color}33;">${r.id}</span>
+          <span style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:800;color:white;">${r.fare}</span>
+        </div>
+        <div style="font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;color:white;margin-bottom:3px;">${r.name}</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">${r.stops.join(' → ')}</div>
+      </button>
+    `).join('');
+
+    // Render mini map
+    renderMiniMap(data, null);
+
+    // Render fare note
+    document.getElementById('detail-fare-note').textContent = data.fareNote;
+
+    document.getElementById('modal-box').scrollTop = 0;
+  }
+
+  function selectRoute(idx) {
+    const data = transportData[currentTransport];
+    activeRouteIndex = idx;
+
+    // Update button styles
+    data.routes.forEach((_, i) => {
+      const btn = document.getElementById(`route-btn-${i}`);
+      if (!btn) return;
+      if (i === idx) {
+        btn.style.background = data.colorBg;
+        btn.style.borderColor = data.color + '88';
+      } else {
+        btn.style.background = 'rgba(255,255,255,0.04)';
+        btn.style.borderColor = 'rgba(255,255,255,0.08)';
+      }
+    });
+
+    // Update info panel
+    const route = data.routes[idx];
+    const panel = document.getElementById('detail-info-panel');
+    panel.style.display = 'block';
+    panel.style.borderColor = data.color + '55';
+    document.getElementById('info-panel-id').textContent = route.id;
+    document.getElementById('info-panel-id').style.color = data.color;
+    document.getElementById('info-panel-name').textContent = route.name;
+    document.getElementById('info-panel-fare').textContent = route.fare;
+    document.getElementById('info-panel-fare').style.color = data.color;
+    document.getElementById('info-panel-stops').textContent = route.stops.join(' → ');
+    document.getElementById('info-panel-desc').textContent = route.desc;
+
+    // Re-render map with highlight
+    renderMiniMap(data, idx);
+  }
+
+  function renderMiniMap(data, activeIdx) {
+    const svg = document.getElementById('detail-mini-map');
+    const routePaths = data.mapRoutes.map((r, i) => {
+      const isActive = (activeIdx === i);
+      const opacity = activeIdx === null ? '0.75' : (isActive ? '1' : '0.18');
+      const sw = isActive ? '5' : '3.5';
+      return `
+        <path d="${r.d}" stroke="${data.mapColor1}" stroke-width="${sw}" fill="none"
+          stroke-linecap="round" stroke-linejoin="round" opacity="${opacity}"
+          style="transition:all 0.35s ease;cursor:pointer;" onclick="selectRoute(${i})"/>
+        <text x="${r.lx}" y="${r.ly}" fill="${isActive ? data.mapColor1 : 'rgba(255,255,255,0.35)'}"
+          font-size="${isActive ? '9.5' : '8'}" font-family="Syne,sans-serif" font-weight="700"
+          style="transition:all 0.3s;pointer-events:none;">${r.label}</text>
+      `;
+    }).join('');
+
+    // Hub marker
+    const hub = data === transportData.tricycle
+      ? `<circle cx="100" cy="180" r="9" fill="${data.mapColor1}" opacity="0.9"/>
+         <circle cx="100" cy="180" r="15" fill="none" stroke="${data.mapColor1}" stroke-width="1.5" opacity="0.4"/>`
+      : data === transportData.batrasco
+      ? `<circle cx="180" cy="280" r="10" fill="${data.mapColor1}" opacity="0.9"/>
+         <circle cx="180" cy="280" r="17" fill="none" stroke="${data.mapColor1}" stroke-width="1.5" opacity="0.35"/>
+         <text x="180" y="305" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="7.5" font-family="DM Sans,sans-serif">BATRASCO Terminal</text>`
+      : `<circle cx="100" cy="180" r="10" fill="${data.mapColor1}" opacity="0.9"/>
+         <circle cx="100" cy="180" r="17" fill="none" stroke="${data.mapColor1}" stroke-width="1.5" opacity="0.35"/>
+         <text x="100" y="198" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="7.5" font-family="DM Sans,sans-serif">Grand Terminal</text>`;
+
+    svg.innerHTML = `
+      <defs>
+        <pattern id="mg" width="25" height="25" patternUnits="userSpaceOnUse">
+          <path d="M 25 0 L 0 0 0 25" fill="none" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+        </pattern>
+      </defs>
+      <rect width="460" height="320" fill="url(#mg)"/>
+      <path d="M 0 180 L 460 180" stroke="rgba(255,255,255,0.07)" stroke-width="12"/>
+      <path d="M 200 0 L 200 320" stroke="rgba(255,255,255,0.05)" stroke-width="8"/>
+      <path d="M 70 0 L 70 320" stroke="rgba(255,255,255,0.04)" stroke-width="6"/>
+      <path d="M 370 0 L 370 320" stroke="rgba(255,255,255,0.04)" stroke-width="6"/>
+      ${routePaths}
+      ${hub}
+    `;
+  }
+
+  function backToTransportPicker() {
+    document.getElementById('modal-route-detail').style.display = 'none';
+    document.getElementById('modal-transport-picker').style.display = 'block';
+    document.getElementById('modal-box').scrollTop = 0;
+  }
+  // ===== END ROUTE MODAL =====
+
+  function setStep(index, el) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('#how-svg > g').forEach((g, i) => {
+      g.style.opacity = i === index ? '1' : '0';
+      g.style.transition = 'opacity 0.4s';
+    });
+  }
+
+  // Smooth scroll for nav
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ===== FLOATING TAB BAR =====
+  const floatTabs = document.getElementById('float-tabs');
+  const ftabs = document.querySelectorAll('.ftab[data-section]');
+  const sections = ['search', 'routes', 'how', 'about'];
+
+  // Show bar once user scrolls past the hero
+  const heroEl = document.querySelector('.hero');
+  const showObserver = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) {
+      floatTabs.classList.add('visible');
+    } else {
+      floatTabs.classList.remove('visible');
+    }
+  }, { threshold: 0.15 });
+  if (heroEl) showObserver.observe(heroEl);
+
+  // Highlight active tab based on scroll position
+  function updateActiveTab() {
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= 120) current = id;
+      }
+    });
+    ftabs.forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.section === current);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveTab, { passive: true });
+  // ===== END FLOATING TAB BAR =====
+
+  // iframe load detection — show fallback if blocked
+  const iframe = document.getElementById('map-iframe');
+  const fallback = document.getElementById('iframe-fallback');
+  if (iframe && fallback) {
+    // Show fallback after timeout if iframe never fires load
+    const fallbackTimer = setTimeout(() => {
+      fallback.style.display = 'flex';
+    }, 8000);
+    iframe.addEventListener('load', () => {
+      clearTimeout(fallbackTimer);
+      // Try to detect blank/blocked iframe
+      try {
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        if (!doc || doc.body.innerHTML === '') {
+          fallback.style.display = 'flex';
+        }
+      } catch(e) {
+        // Cross-origin — that means it actually loaded! Clear fallback.
+        clearTimeout(fallbackTimer);
+      }
+    });
+    iframe.addEventListener('error', () => {
+      fallback.style.display = 'flex';
+    });
+  }
+
+  // ===== MAP INTERACTIONS =====
+  let currentZoom = 1;
+
+  function filterSector(sector, btn) {
+    document.querySelectorAll('.route-filter').forEach(b => {
+      b.style.background = 'rgba(255,255,255,0.04)';
+      b.style.border = '1px solid rgba(255,255,255,0.08)';
+    });
+    btn.style.background = 'rgba(255,255,255,0.14)';
+    btn.style.border = '1px solid rgba(255,255,255,0.28)';
+
+    document.querySelectorAll('.sector-routes').forEach(g => {
+      g.style.opacity = (sector === 'all' || g.classList.contains(sector)) ? '1' : '0.06';
+    });
+
+    const panel = document.getElementById('route-info-panel');
+    if (sector !== 'all') {
+      const sectorColors = { BP:'#F5C842', BN:'#E85D5D', BS:'#5DB8E8', BE:'#5DE86A', BW:'#5D8AE8' };
+      const sectorNames = { BP:'Poblacion Routes', BN:'Northbound Routes', BS:'Southbound Routes', BE:'Eastbound Routes', BW:'Westbound Routes' };
+      const sectorTerminals = { BP:'Grand Terminal', BN:'Grand Terminal', BS:'SM Transport Terminal', BE:'Pallocan Terminal', BW:'Grand Terminal' };
+      const fares = { BP:'₱13–₱16', BN:'₱20–₱45', BS:'₱13–₱20', BE:'₱20–₱50', BW:'₱13–₱55' };
+      panel.style.display = 'block';
+      panel.style.borderColor = sectorColors[sector] + '55';
+      document.getElementById('info-sector').style.color = sectorColors[sector];
+      document.getElementById('info-sector').textContent = sector + ' Sector';
+      document.getElementById('info-name').textContent = sectorNames[sector];
+      document.getElementById('info-via').textContent = 'Hub: ' + sectorTerminals[sector];
+      document.getElementById('info-fare').textContent = fares[sector];
+      document.getElementById('info-type').textContent = 'Jeepney';
+    } else {
+      panel.style.display = 'none';
+    }
+  }
+
+  document.querySelectorAll('.route-line').forEach(line => {
+    line.addEventListener('click', function() {
+      const panel = document.getElementById('route-info-panel');
+      panel.style.display = 'block';
+      document.getElementById('info-sector').textContent = this.dataset.route;
+      document.getElementById('info-name').textContent = this.dataset.name;
+      document.getElementById('info-via').textContent = this.dataset.via;
+      document.getElementById('info-fare').textContent = this.dataset.fare;
+      document.getElementById('info-type').textContent = this.dataset.type;
+      document.querySelectorAll('.route-line').forEach(l => l.setAttribute('opacity','0.15'));
+      this.setAttribute('opacity','1');
+      this.setAttribute('stroke-width','7');
+      setTimeout(() => {
+        document.querySelectorAll('.route-line').forEach(l => { l.removeAttribute('opacity'); l.setAttribute('stroke-width', l.dataset.route && l.dataset.route.startsWith('BW-03') ? '3.5' : '4'); });
+      }, 3000);
+    });
+    line.addEventListener('mouseenter', function() { this.setAttribute('stroke-width','7'); });
+    line.addEventListener('mouseleave', function() { this.setAttribute('stroke-width','4'); });
+  });
+
+  function showTerminal(name, info) {
+    const popup = document.getElementById('map-popup');
+    document.getElementById('popup-title').textContent = name;
+    document.getElementById('popup-body').textContent = info;
+    popup.style.display = 'block';
+  }
+
+  function zoomMap(factor) {
+    currentZoom = Math.min(Math.max(currentZoom * factor, 0.6), 2.5);
+    document.getElementById('main-map').style.transform = 'scale(' + currentZoom + ')';
+    document.getElementById('map-viewport').style.cursor = currentZoom > 1 ? 'move' : 'grab';
+  }
+
+  function resetZoom() {
+    currentZoom = 1;
+    document.getElementById('main-map').style.transform = 'scale(1)';
+  }
+  // ===== END MAP =====
+
+  // Animate stat numbers on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeInUp 0.5s ease forwards';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feature-card, .route-card, .sdg-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    observer.observe(el);
+  });
+
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  `;
+  document.head.appendChild(style);
+</script>
+</body>
+</html>
